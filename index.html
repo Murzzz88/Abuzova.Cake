@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Магазин тортов и десертов</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #fff8f0; }
+    header { background: #f4a261; padding: 20px; text-align: center; color: white; }
+    h1 { margin: 0; }
+    .catalog { display: flex; flex-wrap: wrap; justify-content: center; padding: 20px; gap: 20px; }
+    .cake-card { background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); width: 300px; padding: 15px; }
+    .cake-card img { width: 100%; border-radius: 8px; }
+    .cake-card h2 { margin: 10px 0 5px; font-size: 20px; }
+    .cake-card select, .cake-card button { width: 100%; margin-top: 10px; padding: 8px; font-size: 16px; }
+    #order-summary { max-width: 600px; margin: 20px auto; background: #ffe8d6; padding: 15px; border-radius: 8px; }
+    #order-summary h3 { margin-top: 0; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Магазин тортов и десертов</h1>
+  <p>Выберите торт, начинку и дизайн, чтобы сделать заказ</p>
+</header>
+
+<section class="catalog">
+  <div class="cake-card" data-name="Шоколадный торт">
+    <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=400&q=80" alt="Шоколадный торт" />
+    <h2>Шоколадный торт</h2>
+    <label>Начинка:
+      <select class="filling-select">
+        <option value="крем">Крем</option>
+        <option value="ягоды">Ягоды</option>
+        <option value="орехи">Орехи</option>
+      </select>
+    </label>
+    <label>Дизайн:
+      <select class="design-select">
+        <option value="классический">Классический</option>
+        <option value="праздничный">Праздничный</option>
+        <option value="минимализм">Минимализм</option>
+      </select>
+    </label>
+    <button class="add-order-btn">Добавить в заказ</button>
+  </div>
+
+  <div class="cake-card" data-name="Фруктовый торт">
+    <img src="https://images.unsplash.com/photo-1505253210343-4e9e8d7d9f6e?auto=format&fit=crop&w=400&q=80" alt="Фруктовый торт" />
+    <h2>Фруктовый торт</h2>
+    <label>Начинка:
+      <select class="filling-select">
+        <option value="крем">Крем</option>
+        <option value="ягоды">Ягоды</option>
+        <option value="цитрус">Цитрус</option>
+      </select>
+    </label>
+    <label>Дизайн:
+      <select class="design-select">
+        <option value="летний">Летний</option>
+        <option value="праздничный">Праздничный</option>
+        <option value="романтический">Романтический</option>
+      </select>
+    </label>
+    <button class="add-order-btn">Добавить в заказ</button>
+  </div>
+</section>
+
+<section id="order-summary" style="display:none;">
+  <h3>Ваш заказ:</h3>
+  <ul id="order-list"></ul>
+  <button id="clear-order-btn">Очистить заказ</button>
+</section>
+
+<script>
+  const orderList = document.getElementById('order-list');
+  const orderSummary = document.getElementById('order-summary');
+  const clearOrderBtn = document.getElementById('clear-order-btn');
+
+  const orders = [];
+
+  document.querySelectorAll('.add-order-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      const card = button.closest('.cake-card');
+      const name = card.dataset.name;
+      const filling = card.querySelector('.filling-select').value;
+      const design = card.querySelector('.design-select').value;
+
+      orders.push({ name, filling, design });
+      renderOrder();
+    });
+  });
+
+  clearOrderBtn.addEventListener('click', () => {
+    orders.length = 0;
+    renderOrder();
+  });
+
+  function renderOrder() {
+    if (orders.length === 0) {
+      orderSummary.style.display = 'none';
+      orderList.innerHTML = '';
+      return;
+    }
+    orderSummary.style.display = 'block';
+    orderList.innerHTML = '';
+    orders.forEach((order, index) => {
+      const li = document.createElement('li');
+      li.textContent = `${order.name} — начинка: ${order.filling}, дизайн: ${order.design}`;
+      orderList.appendChild(li);
+    });
+  }
+</script>
+
+</body>
+</html>
